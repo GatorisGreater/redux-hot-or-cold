@@ -5,12 +5,12 @@ import * as actions from '../actions/index';
 const initialHotOrColdState = {
     guessHistory: [],
     feedback: 'Make Your Guess!',
-    randomNumber: Math.floor(Math.random()*100)
+    randomNumber: Math.floor(Math.random()*100),
+    fewestGuesses: 10
 };
 
 export const hotOrColdReducer = (state=initialHotOrColdState, action) => {
     if (action.type === actions.RESTART_GAME) {
-        console.log("reducer success");
         return initialHotOrColdState;
     }
     else if (action.type === actions.USER_GUESS) {
@@ -48,20 +48,21 @@ export const hotOrColdReducer = (state=initialHotOrColdState, action) => {
 
         return state;
     }
- /*   else if (action.type === actions.USER_GUESS) {
-        // Take value from user input field
-        const index = state.findIndex(repository =>
-            repository.name === action.repository
-        );
-
-        if (index === -1) {
-            throw new Error('Could not find repository');
+    else if (action.type === actions.FETCH_SUCCESS) {
+        console.log("reducer fetch success");
+        let fewestGuessNode = action.fewestGuess;
+        console.log(fewestGuessNode);
+        console.log(state.fewestGuesses);
+        if (state.fewestGuess > fewestGuessNode) {
+            state = Object.assign({}, state, {
+            fewestGuesses: fewestGuessNode
+            });
+            return state;          
+        } 
+        else {
+            return state;
         }
 
-        const before = state.slice(0, index);
-        const after = state.slice(index + 1);
-        const newRepository = Object.assign({}, state[index], {rating: action.rating});
-        return [...before, newRepository, ...after];
-    }*/
+    }
     return state;
 };

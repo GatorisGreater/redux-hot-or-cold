@@ -10,13 +10,24 @@ export function Header (props) {
 			<nav className="nav-bar">
 				<ul> 
 					<li>WHAT?</li>
-					<li onClick={() => props.dispatch(actions.restartGame())}>+NEW GAME
+					<li onClick={() => {
+						props.dispatch(actions.restartGame()); 
+						props.dispatch(actions.fetchFewestGuesses())
+						}
+					}>+NEW GAME
 					</li>
 				</ul>
 			</nav>
 			<h1>HOT or COLD</h1>
+			<h3>{props.fewestGuesses}</h3>
 		</div>
 	)
 }
 
-export default connect ()(Header);
+const mapStateToProps = (state, props) => {
+	return {
+		fewestGuesses: state.fewestGuesses
+	}
+}
+
+export default connect (mapStateToProps)(Header);
